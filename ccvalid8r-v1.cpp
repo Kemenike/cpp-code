@@ -152,7 +152,7 @@ public:
 
     int calcLuhn()
     {
-        int result = -1;
+        int result = 0;
         int cardHalf1[8] = {-1};
         int cardHalf2[8] = {-1};
         int temp1 = 0, temp2 = 0;
@@ -184,7 +184,7 @@ public:
         {
             result = result + cardHalf1[i] + cardHalf2[i];
         }
-
+        
         return result;
     }
 };
@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
 
     cc.setCardNumber(cardNumber);
 
-    if (cc.checkValid() == 0)
+    if (cc.checkValid() == true)
     {
         cout << "The credit card number " << cc.getCardNumber() << " is valid.\n";
     }
