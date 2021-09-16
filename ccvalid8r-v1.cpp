@@ -41,7 +41,7 @@ bool entryCheck(string);
 class CreditCard
 {
 private:
-    unsigned __int64 cardNumber;
+    unsigned __int64 cardNumber = 0;
     int cardNum_arr[16] = {-1};
     int card1[4] = {-1};
     int card2[4] = {-1};
@@ -59,7 +59,7 @@ public:
             for (int i = 0; i < (int)inputNumber.length(); i++)
             {
                 //Setting Card Number Array
-                if(i < 16)
+                if (i < 16)
                 {
                     temp = inputNumber[i];
                     cardNum_arr[i] = stoi(temp);
@@ -134,26 +134,59 @@ public:
         }
     }
 
-    bool checkValid() 
+    bool checkValid()
     {
         bool validity = false;
 
-        if (calcLuhn() == 0)
+        if (calcLuhn() % 10 == 0)
         {
             validity = true;
-        } else {
+        }
+        else
+        {
             validity = false;
         }
 
         return validity;
     }
-    
-    int calcLuhn() 
+
+    int calcLuhn()
     {
         int result = -1;
+        int cardHalf1[8] = {-1};
+        int cardHalf2[8] = {-1};
+        int temp1 = 0, temp2 = 0;
 
+        for (int i = 0; i < 16; i++)
+        {
+            if (i % 2 == 0)
+            {
+                cardHalf1[temp1] = cardNum_arr[i];
+                temp1++;
+            }
+            else
+            {
+                cardHalf2[temp2] = cardNum_arr[i];
+                temp2++;
+            }
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            cardHalf1[i] = 2 * cardHalf1[i];
+            if (cardHalf1[i] >= 10)
+            {
+                cardHalf1[i] = (cardHalf1[i] % 10) + (cardHalf1[i] / 10);
+            }
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            result = result + cardHalf1[i] + cardHalf2[i];
+        }
+
+        return result;
     }
-
 };
 
 //Functions
@@ -197,7 +230,7 @@ int main(int argc, char *argv[])
 
     do
     {
-        if (entryCheck(cardNumber) == true)
+        if (entryCheck(cardNumber))
         {
             complete = true;
         }
@@ -211,7 +244,7 @@ int main(int argc, char *argv[])
 
     cc.setCardNumber(cardNumber);
 
-    if (cc.checkValid())
+    if (cc.checkValid() == 0)
     {
         cout << "The credit card number " << cc.getCardNumber() << " is valid.\n";
     }
